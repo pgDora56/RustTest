@@ -1,33 +1,29 @@
-use rand::Rng;
-use std::cmp::Ordering;
 use std::io;
 
 fn main() {
-    let sec_n = rand::thread_rng().gen_range(1..101);
-    loop {
-        println!("Enter your number: ");
+    println!("Fizzbuzz Max:");
 
-        let mut g = String::new();
-        io::stdin().read_line(&mut g).expect("Failed to read line");
-        let g: u32 = match g.trim().parse() {
-            Ok(num) => num,
-            Err(_) => {
-                println!("Invalid value, please retype number.");
-                continue;
-            }
-        };
+    let mut maxi = String::new();
+    io::stdin()
+        .read_line(&mut maxi)
+        .expect("Failed to read line");
 
-        println!("You guessed: {}", g);
+    let maxi: usize = maxi
+        .trim()
+        .parse()
+        .expect("MaxNumber entered was not a number");
 
-        match g.cmp(&sec_n) {
-            Ordering::Equal => {
-                println!("You win!!");
-                break;
-            }
-            Ordering::Less => println!("Small..."),
-            Ordering::Greater => println!("Big..."),
+    let mut i = 0;
+    while i <= maxi {
+        if i % 15 == 0 {
+            println!("FizzBuzz");
+        } else if i % 3 == 0 {
+            println!("Fizz");
+        } else if i % 5 == 0 {
+            println!("Buzz");
+        } else {
+            println!("Num: {}", i)
         }
+        i += 1;
     }
 }
-
-// https://doc.rust-jp.rs/book-ja/ch02-00-guessing-game-tutorial.html
