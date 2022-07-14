@@ -1,29 +1,20 @@
-use std::io;
+extern crate rust_test;
+
+use std::env;
+use std::process;
+
+use rust_test::Config;
 
 fn main() {
-    println!("Fizzbuzz Max:");
+    let args: Vec<String> = env::args().collect();
+    let cfg = Config::new(&args).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {}", err);
+        process::exit(1);
+    });
+    println!("Searching for {} in {}", cfg.query, cfg.filename);
 
-    let mut maxi = String::new();
-    io::stdin()
-        .read_line(&mut maxi)
-        .expect("Failed to read line");
-
-    let maxi: usize = maxi
-        .trim()
-        .parse()
-        .expect("MaxNumber entered was not a number");
-
-    let mut i = 0;
-    while i <= maxi {
-        if i % 15 == 0 {
-            println!("FizzBuzz");
-        } else if i % 3 == 0 {
-            println!("Fizz");
-        } else if i % 5 == 0 {
-            println!("Buzz");
-        } else {
-            println!("Num: {}", i)
-        }
-        i += 1;
+    if let Err(e) = rust_test::run(cfg) {
+        println!("Application error: {}", e);
+        process::exit(1);
     }
 }
